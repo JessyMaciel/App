@@ -29,6 +29,8 @@
     -Number (2, 1, .3);
     -Function
 
+//JavaScript transforma praticamente todos os tipos de dados em objetos
+// Métodos são funções de um objeto
 ## Escopo e variáveis
     -Variáveis globais e locais;
     -Constantes
@@ -40,10 +42,12 @@
 ## Operadores
     -Operador de atribuição de valor (=);
     -Operador de concatenação (+);
-    -Operadores de comparação: == (igual), != (diferente), <=, >=, >, <
+    -Operadores de comparação: == (igual), != (diferente), <=, >=, >, <;
+    -Spread operator (...)
 
 ### Arrays:
-    -Uma lista que contem qualquer tipo de dado
+    -Uma lista que contem qualquer tipo de dado;
+    -Métodos de array push (find, forEach, filter), HOF (Higher Order Functions)
 
 ### Objetos:
     -Atributos e metodos;
