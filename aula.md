@@ -62,3 +62,33 @@ Exemplo: let meta {
 
 // Método está dentro de um objeto e função está fora
 Exemplo de função: const criarMeta = () => {}
+
+
+# Estrutura de repetição
+    -While;
+    Exemplo: const start = () => {
+        let count = 1
+        while(count <= 10>){
+            console.log(count)
+            count = count + 1
+        }
+    }
+    start {}
+
+// Return para a execução da função
+
+# Condicionais
+    -Switch
+
+## Módulos em Node.js:
+    -Importação de módulos (require, CommonJS)
+    -Biblioteca 'inquier' para criar prompts interativos
+
+// Para instalação, digitar no terminal: npm install inquier
+// Para selecionar a pasta que deseja utilizar: const { select } = require('@inquier/prompts')
+
+
+// Quando a função tiver AWAIT, também precisará ter ASYNC
+
+## Programação assíncrona e Promises:
+    -Uso de funções assíncronas (assync/await)
