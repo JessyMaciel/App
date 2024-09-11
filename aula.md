@@ -40,6 +40,7 @@
 ## Operadores
     -Operador de atribuição de valor (=);
     -Operador de concatenação (+);
+    -Operadores de comparação: == (igual), != (diferente), <=, >=, >, <
 
 ### Arrays:
     -Uma lista que contem qualquer tipo de dado
