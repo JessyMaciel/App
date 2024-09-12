@@ -1,0 +1,22 @@
+[
+  {
+    "value": "beber agua",
+    "checked": false
+  },
+  {
+    "value": "cantar",
+    "checked": true
+  },
+  {
+    "value": "academia",
+    "checked": true
+  },
+  {
+    "value": "cantar",
+    "checked": false
+  },
+  {
+    "value": "Andar 30 minutos por dia",
+    "checked": false
+  }
+]

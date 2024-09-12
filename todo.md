@@ -4,3 +4,4 @@
     -Metas abertas
 -Marcar/ Desmarcar metas realizadas
 -Sistema de mensagem
+-Sistema de carregar e salvar metas

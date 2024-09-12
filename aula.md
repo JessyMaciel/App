@@ -95,5 +95,9 @@ Exemplo de função: const criarMeta = () => {}
 
 // Quando a função tiver AWAIT, também precisará ter ASYNC
 
+## Json
+    -Javascript Object Notation (.json)
+    -JSON.parse(): transforma de JSON para JS
+    -JSON.stringify(): transforma de JS para json
 ## Programação assíncrona e Promises:
     -Uso de funções assíncronas (assync/await)
