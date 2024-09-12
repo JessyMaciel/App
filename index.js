@@ -1,30 +1,44 @@
 const { select, input, checkbox  } = require('@inquirer/prompts')
+const fs = require("fs").promises
 
-let meta = {
-    value: 'Tomar 3L de água por dia',
-    checked: false,
-}
+let mensagem = "Bem vindo ao APP de metas! ";
 
 let metas = [ meta ]
 
-const cadastrarMeta = async () => {
-    const meta = await input({ message: "Digite a meta:"})
+const carregarMetas = async () => {
+    try {
+        const dados = await fs.readFile("metas.json", "utf-8")
+        metas = JSON.parse(dados)
+        }
+        catch (erro) {
+            metas = []
+        }
+    }
+
+    const salvarMetas = async () => {
+        await fs.writeFile("metas.json", JSON.stringify(metas, null, ))
+    }
+
+    const cadastrarMeta = async () => {
+            const meta = await input({ message: "Digite a meta:"})
     
-        if(meta.length ==0) {
-            console.log('A meta não pode ser vazia')
-        if(meta.length ==0) {
-            console.log('A meta não pode ser vazia')
+            if(meta.length == 0) {
             mensagem = 'A meta não pode ser vazia'
-            return
-                
+            return                
         }
     
-    metas.push(
-        { value: meta, checked: false })
-    
+        metas.push(
+        { value: meta, checked: false }
+    )
+    mensagem = "Meta cadastrada com sucesso!"    
 }
 
 const listarMetas = async () => {
+    if(metas.length == 0) {
+        mensagem = "Não existem metas"
+        return
+    }
+
     const respostas = await checkbox({
         message: "Use as setas para mudar de meta, o espaço para marcar ou desmarcar e o enter para finalizar essa etapa",
         choices: [...metas],
@@ -36,7 +50,7 @@ const listarMetas = async () => {
     })
 
     if(respostas.lenght == 0) {
-        console.log("Nenhuma meta selecionada")
+        mensagem = "Nenhuma meta selecionada"
         return
     }  
 
@@ -48,77 +62,98 @@ const listarMetas = async () => {
         meta.checked = true
     })
 
-    console.log('Meta(s) marcadas como concluída(s)')
+    mensagem = 'Meta(s) marcada(s) como concluída(s)'
 
 }
 
 const metasRealizadas = async () => {
+    if(realizadas.lenght ==0) {
+        mensagem = 'Não existem metas'
+        return
+    }
+
     const realizadas = metas.filter((meta) => {
         return meta.checked
     })
 
-    console.log(realizadas)
-
     if(realizadas.lenght ==0) {
-        console.log('Não existem metas realizadas! :( ')
+        mensagem = 'Não existem metas realizadas! :( '
         return
-    }
+    }   
 
     await select({
         message: "Metas Realizadas:" + realizadas.length,
         choices: [...realizadas]
     })
-
-    console.log(realizadas)
 }
 
-const metasBertas = async () => {
+const metasAbertas = async () => {
+    if(metas.length == 0){
+        mensagem = "Não existem metas!"
+        return
+    }
+
     const abertas = metas.filter((meta) => {
         return meta.checked != true
     })
 
     if(abertas.length == 0) {
-        console.log("Não existem metas abertas! :)")
+        mensagem = "Não existem metas abertas! :)"
         return
     }
 
     await select({
-        message: "Metas Abertas" + abertas.length,
+        message: "Metas Abertas:" + abertas.length,
         choices: [...abertas]
     })
 }
 
-const deletarMetas = async () => {
-    const metasDesmarcadas = metas.map((meta) => {
+const removerMetas = async () => {
+    if(metas.lenght == 0) {
+        mensagem = "Não existem metas!"
+        return
+    }
+
+    const metasRemovidas = metas.map((meta) => {
         return {value: meta.value, checked: false}
     })
-}
 
-const deletarMetas async () => {
-    const respostas = await checkbox({
-        message: "Selecione item para deletar",
+    const itemsARemover = await checkbox({
+        message: "Selecione item para remover",
         choices: [...metasDesmarcadas],
         instructions: false,
     })
 
-    if(itemsaDeletar.lenght == 0) {
-        console.log("Nenhum item para deletar!")
+    if(itemsARemover.lenght == 0) {
+        mensagem = "Nenhum item para remover!"
         return
     }
 
-    itemsaDeletar.forEAch((item) =>{
-        metas.filter((meta) => {
-            return meta.checked.value != item
-        })
+    itemsADeletar.forEAch((item) => {
+        metas = metas.filter((meta) => {
+            return meta.value != item
+        })        
     })
-    console.log("Meta(s) deleta(s) com sucesso!")
+    
+    mensagem = "Meta(s) removidas(s) com sucesso!"
 }
 
+const mostarMensagem = () => {
+    console.clear();
+
+    if(mensagem != ""){ 
+        console.log(mensagem)
+        console.log(" ")
+        mensagem = " "
+    }
 }
 
 const start = async () => {
+    await carregarMetas()
 
     while(true){
+        mostarMensagem()
+        await salvarMetas()
 
         const option = await select({
             message: "Menu >",
@@ -140,8 +175,8 @@ const start = async () => {
                     value: "abertas"
                 },
                 {
-                    name: "Deletar Metas",
-                    value: "deletar"
+                    name: "Remover Metas",
+                    value: "remover"
                 },
                 {
                     name: "Sair",
@@ -150,15 +185,12 @@ const start = async () => {
             ]
         })
 
-
         switch(option) {
             case "cadastrar":
                 await cadastrarMeta()
-                console.log(metas)
                 break
             case "listar":
                 await  listarMetas()
-                console.log("Listar metas")
                 break
             case "realizadas":
                 await metasRealizadas()
@@ -166,8 +198,8 @@ const start = async () => {
             case "abertas":
                 await metasAbertas()
                 break
-            case "deletar":
-                await deletarMetas()
+            case "remover":
+                await removerMetas()
                 break
             case "sair":
                 console.log("Até a próxima")
@@ -176,4 +208,4 @@ const start = async () => {
     }
 }
 
-start()
+start();
